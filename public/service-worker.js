@@ -1,5 +1,3 @@
-// Uncomment the lines below
-
 const CACHE_NAME = "static-cache-v2";
 const DATA_CACHE_NAME = "data-cache-v1";
 
@@ -15,17 +13,12 @@ const FILES_TO_CACHE = [
 ];
 
 // install
-self.addEventListener("install", function (evt) {
-    // pre cache what data?
-    // evt.waitUntil(
-    //   caches.open(DATA_CACHE_NAME).then((cache) => cache.add("/api/budget"))
-    //   );
-      
+self.addEventListener("install", function(evt) {
     // pre cache all static assets
     evt.waitUntil(
-      caches.open(CACHE_NAME).then(cache => {
+      caches.open(CACHE_NAME).then(function(cache) {
         console.log("You're files were pre-cached successfully!");
-        cache.addAll(FILES_TO_CACHE)
+        return cache.addAll(FILES_TO_CACHE);
       })
     );
   
@@ -58,7 +51,7 @@ self.addEventListener("install", function (evt) {
   self.addEventListener("fetch", function(evt) {
     // cache successful requests to the API
     if (evt.request.url.includes("/api/")) {
-        console.log('[Service Worker] Fetch (data)', evt.request.url);
+      console.log('[Service Worker] Fetch (data)', evt.request.url);
       evt.respondWith(
         caches.open(DATA_CACHE_NAME).then(cache => {
           return fetch(evt.request)
@@ -81,12 +74,9 @@ self.addEventListener("install", function (evt) {
     };
 
     evt.respondWith(
-      caches.open(CACHE_NAME).then(cache => {
-          return cache.match(evt.request).then(response => {
+      cache.match(evt.request).then(response => {
           return response || fetch(evt.request);
         
-      });
-      })
-    );
+      }));
 
   });

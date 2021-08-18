@@ -20,7 +20,7 @@ request.onupgradeneeded = function (e) {
 };
 
 request.onerror = function (e) {
-  console.log(`Woops! ${e.target.errorCode}`);
+  console.log(`Whoops! ${e.target.errorCode}`);
 };
 
 function checkDatabase() {
