@@ -1,8 +1,11 @@
 let db;
-let budgetVersion;
+let transVersion;
+const indexedDB = window.indexedDB
+// Create a new db request for a "trans" database.
+const request = indexedDB.open('budgetDB', transVersion || 21);
 
-// Create a new db request for a "budget" database.
-const request = indexedDB.open('BudgetDB', budgetVersion || 21);
+
+
 
 request.onupgradeneeded = function (e) {
   console.log('Upgrade needed in IndexDB');
@@ -15,22 +18,26 @@ request.onupgradeneeded = function (e) {
   db = e.target.result;
 
   if (db.objectStoreNames.length === 0) {
-    db.createObjectStore('BudgetStore', { autoIncrement: true });
+    db.createObjectStore('trans', { autoIncrement: true });
   }
+
 };
 
 request.onerror = function (e) {
   console.log(`Whoops! ${e.target.errorCode}`);
 };
 
+
+
+
 function checkDatabase() {
   console.log('check db invoked');
 
-  // Open a transaction on your BudgetStore db
-  let transaction = db.transaction(['BudgetStore'], 'readwrite');
+  // Open a transaction on your trans db
+  let transaction = db.transaction(['trans'], 'readwrite');
 
-  // access your BudgetStore object
-  const store = transaction.objectStore('BudgetStore');
+  // access your object
+  const store = transaction.objectStore('trans');
 
   // Get all records from store and set to a variable
   const getAll = store.getAll();
@@ -51,11 +58,11 @@ function checkDatabase() {
         .then((res) => {
           // If our returned response is not empty
           if (res.length !== 0) {
-            // Open another transaction to BudgetStore with the ability to read and write
-            transaction = db.transaction(['BudgetStore'], 'readwrite');
+            // Open another transaction to trans with the ability to read and write
+            transaction = db.transaction(['trans'], 'readwrite');
 
             // Assign the current store to a variable
-            const currentStore = transaction.objectStore('BudgetStore');
+            const currentStore = transaction.objectStore('trans');
 
             // Clear existing entries because our bulk add was successful
             currentStore.clear();
@@ -65,6 +72,7 @@ function checkDatabase() {
     }
   };
 }
+
 
 request.onsuccess = function (e) {
   console.log('success');
@@ -77,17 +85,23 @@ request.onsuccess = function (e) {
   }
 };
 
+
+
+
 const saveRecord = (record) => {
   console.log('Save record invoked');
-  // Create a transaction on the BudgetStore db with readwrite access
-  const transaction = db.transaction(['BudgetStore'], 'readwrite');
+  // Create a transaction on the trans db with readwrite access
+  const transaction = db.transaction(['trans'], 'readwrite');
 
-  // Access your BudgetStore object store
-  const store = transaction.objectStore('BudgetStore');
+  // Access your trans object store
+  const store = transaction.objectStore('trans');
 
   // Add record to your store with add method.
   store.add(record);
 };
+
+
+
 
 // Listen for app coming back online
 window.addEventListener('online', checkDatabase);

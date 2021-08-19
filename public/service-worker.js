@@ -1,15 +1,15 @@
-const CACHE_NAME = "static-cache-v2";
-const DATA_CACHE_NAME = "data-cache-v1";
+let CACHE_NAME = "static-cache-v2";
+let DATA_CACHE_NAME = "data-cache-v1";
 
-const FILES_TO_CACHE = [
-  '/',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png',
-  '/index.html',
-  '/index.js',
-  '/manifest.webmanifest',
-  '/style.css',
-  '/budgetDB.js'
+let FILES_TO_CACHE = [
+  "/",
+  "/icons/icon-192x192.png",
+  "/icons/icon-512x512.png",
+  "/index.html",
+  "/index.js",
+  "/manifest.webmanifest",
+  "/styles.css",
+  "/budgetDB.js"
 ];
 
 // install
@@ -17,8 +17,9 @@ self.addEventListener("install", function(evt) {
     // pre cache all static assets
     evt.waitUntil(
       caches.open(CACHE_NAME).then(function(cache) {
-        console.log("You're files were pre-cached successfully!");
+        console.log(FILES_TO_CACHE);
         return cache.addAll(FILES_TO_CACHE);
+        console.log("You're files were pre-cached successfully!");
       })
     );
   
