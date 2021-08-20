@@ -1,8 +1,8 @@
 let db;
-let transVersion;
+let budgetVersion;
 const indexedDB = window.indexedDB
-// Create a new db request for a "trans" database.
-const request = indexedDB.open('budgetDB', transVersion || 21);
+// Create a new db request for a "budget" database.
+const request = indexedDB.open('budgetDB', budgetVersion || 21);
 
 
 
@@ -18,7 +18,7 @@ request.onupgradeneeded = function (e) {
   db = e.target.result;
 
   if (db.objectStoreNames.length === 0) {
-    db.createObjectStore('trans', { autoIncrement: true });
+    db.createObjectStore('budget', { autoIncrement: true });
   }
 
 };
@@ -33,11 +33,11 @@ request.onerror = function (e) {
 function checkDatabase() {
   console.log('check db invoked');
 
-  // Open a transaction on your trans db
-  let transaction = db.transaction(['trans'], 'readwrite');
+  // Open a transaction on your budget db
+  let transaction = db.transaction(['budget'], 'readwrite');
 
   // access your object
-  const store = transaction.objectStore('trans');
+  const store = transaction.objectStore('budget');
 
   // Get all records from store and set to a variable
   const getAll = store.getAll();
@@ -58,11 +58,11 @@ function checkDatabase() {
         .then((res) => {
           // If our returned response is not empty
           if (res.length !== 0) {
-            // Open another transaction to trans with the ability to read and write
-            transaction = db.transaction(['trans'], 'readwrite');
+            // Open another transaction to budget with the ability to read and write
+            transaction = db.transaction(['budget'], 'readwrite');
 
             // Assign the current store to a variable
-            const currentStore = transaction.objectStore('trans');
+            const currentStore = transaction.objectStore('budget');
 
             // Clear existing entries because our bulk add was successful
             currentStore.clear();
