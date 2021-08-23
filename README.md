@@ -3,22 +3,24 @@
 
 ## Creating an Online/Offline Budget Tracker
 
-This is the nineteenth assignment for the MSU Coding Bootcamp; to create backend, database and routes of a workout tracker, and to deploy it on Heroku.  Using Mongoose witha  Mongo database, and Express router, the app will also utilize MongoDB Atlas.
+This is the nineteenth assignment for the MSU Coding Bootcamp; To add the functionality to our budget tracking app so we can allow for offline access and still save and update budget data when back online, and to deploy it on Heroku.  Using Mongoose with a Mongo database, and Express router, the app will also utilize MongoDB Atlas.
 
-The app allows a user to track daily workouts. The user can log multiple exercises in a workout, can track the workout data, can track distance for cardio workouts.
+The app allows a user to track an online budget. The user can add expenses and deposits to the budget whether the app is online or offline.  The offline transactions will populate the total when brought back online.
 
 ### Live Links
-- [Daniel Shoup's Workout Tracker Repisitory](https://github.com/danshoup/BudgetTracker)
-- [Daniel Shoup's link to the deployed Workout Tracker on Heroku](https://budget-tracker-msu-2021.herokuapp.com/)
+- [Daniel Shoup's Budget Tracker Repisitory](https://github.com/danshoup/BudgetTracker)
+- [Daniel Shoup's link to the deployed Budget Tracker on Heroku](https://budget-tracker-msu-2021.herokuapp.com/)
 
 
-### Workout Tracker Screenshot
+### Budget Tracker Screenshot
 
-![Application Screen Shot1](./public/BudgetTracker-screenshot.png)
-![Application Screen Shot2](./public/BudgetTracker-screenshot2.png)
+![Application Screen Shot1](./public/images/BudgetTracker-screenshot.png)
+
 
 ## Acceptance Criteria
+- User is able to use the budget app without an internet connecdtion.
 
+- When the user makes a deposit or withdrawl offline, it will cached and will be added to the history when back online
 
 - Folder structure follows the MVC paradim.
 
