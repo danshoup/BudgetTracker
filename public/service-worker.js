@@ -1,5 +1,3 @@
-let CACHE_NAME = "static-cache-v2";
-let DATA_CACHE_NAME = "data-cache-v1";
 
 let FILES_TO_CACHE = [
   "/",
@@ -12,14 +10,18 @@ let FILES_TO_CACHE = [
   "/budgetDB.js"
 ];
 
+let CACHE_NAME = "static-cache-v2";
+let DATA_CACHE_NAME = "data-cache-v1";
+
+
 // install
-self.addEventListener("install", function(evt) {
+self.addEventListener("install", function(event) {
     // pre cache all static assets
-    evt.waitUntil(
+    event.waitUntil(
       caches.open(CACHE_NAME).then(function(cache) {
         console.log(FILES_TO_CACHE);
-        return cache.addAll(FILES_TO_CACHE);
         console.log("You're files were pre-cached successfully!");
+        return cache.addAll(FILES_TO_CACHE);
       })
     );
   
@@ -49,24 +51,24 @@ self.addEventListener("install", function(evt) {
   
 
   // fetch
-  self.addEventListener("fetch", function(evt) {
+  self.addEventListener("fetch", function(event) {
     // cache successful requests to the API
-    if (evt.request.url.includes("/api/")) {
-      console.log('[Service Worker] Fetch (data)', evt.request.url);
-      evt.respondWith(
+    if (event.request.url.includes("/api/")) {
+      console.log('[Service Worker] Fetch (data)', event.request.url);
+      event.respondWith(
         caches.open(DATA_CACHE_NAME).then(cache => {
-          return fetch(evt.request)
+          return fetch(event.request)
             .then(response => {
               // If the response was good, clone it and store it in the cache.
               if (response.status === 200) {
-                cache.put(evt.request.url, response.clone());
+                cache.put(event.request.url, response.clone());
               }
   
               return response;
             })
             .catch(err => {
               // Network request failed, try to get it from the cache.
-              return cache.match(evt.request);
+              return cache.match(event.request);
             });
         }).catch(err => console.log(err))
       );
@@ -74,9 +76,9 @@ self.addEventListener("install", function(evt) {
       return;
     };
 
-    evt.respondWith(
-      caches.match(evt.request).then(response => {
-          return response || fetch(evt.request);
+    event.respondWith(
+      caches.match(event.request).then(response => {
+          return response || fetch(event.request);
         
       }));
 
